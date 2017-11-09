@@ -5,7 +5,9 @@ A featureful, polymorphic Python3 stack datatype (for educational purposes) offe
 
 * access to top item: `s1.top()` returns `2`; `s2.top()` returns `None`
 
-* emptyness testing: `s1.is_empty()` returns `False`; `s2.is_empty()` returns `True`
+* emptiness and boolean truthiness testing:<br>
+          `s1.is_empty()` returns `False`; `s2.is_empty()` returns `True`<br>
+		  `s1 and not s2` returns `True`
 
 * pushing single items: `s2.push(2)` returns `Stack[2]`
 

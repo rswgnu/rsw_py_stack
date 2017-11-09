@@ -8,7 +8,7 @@
 # LICENSE:      MIT License
 # COPYRIGHT:    Copyright (C) 2017  Bob Weiner
 #
-# LAST-MOD:      9-Nov-17 at 09:02:02 by Bob Weiner
+# LAST-MOD:      9-Nov-17 at 16:38:16 by Bob Weiner
 #
 # DESCRIPTION:  
 """
@@ -18,7 +18,9 @@ A featureful, polymorphic Python3 stack datatype (for educational purposes) offe
 
         access to top item: s1.top() returns 2; s2.top() returns None
 
-        emptyness testing: s1.is_empty() returns False; s2.is_empty() returns True
+        emptiness and boolean truthiness testing:
+           s1.is_empty() returns False; s2.is_empty() returns True
+           s1 and not s2 returns True
 
         pushing single items: s2.push(2) returns Stack[2]
 
@@ -117,6 +119,9 @@ class Stack(object):
                 return self
         else:
             raise TypeError("Multiplier must be a non-negative integer but is: %s" % num)
+
+    def __bool__(self):
+        return bool(self.elts)
 
     def __contains__(self, item):
         return item in self.elts
