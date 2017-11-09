@@ -23,8 +23,8 @@ A featureful, polymorphic Python3 stack datatype (for educational purposes) offe
 
 * counting item occurrences: `s2.count(3)` returns `1`
 
-* conversion to a standard Python list of items:
-         from bottom to top: `s2.items()` returns `[2, 3, 4]`
+* conversion to a standard Python list of items:<br>
+         from bottom to top: `s2.items()` returns `[2, 3, 4]`<br>
          from top to bottom: `s2.list()`  returns `[4, 3, 2]`
 
 * a full set of self-tests: `Stack.test()`.
