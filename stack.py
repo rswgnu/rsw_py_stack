@@ -8,7 +8,7 @@
 # LICENSE:      MIT License
 # COPYRIGHT:    Copyright (C) 2017  Bob Weiner
 #
-# LAST-MOD:      9-Nov-17 at 16:38:16 by Bob Weiner
+# LAST-MOD:     12-Nov-17 at 12:40:56 by Bob Weiner
 #
 # DESCRIPTION:  
 """
@@ -42,7 +42,7 @@ A featureful, polymorphic Python3 stack datatype (for educational purposes) offe
             from bottom to top: s2.items() returns [2, 3, 4]
             from top to bottom: s2.list()  returns [4, 3, 2]
 
-        a full set of self-tests: Stack.test().
+        a full set of self-tests: test_stack().
 """
 # DESCRIP-END.
 
@@ -149,64 +149,88 @@ class Stack(object):
         "Return the printable representation of a Stack." 
         return "Stack" + str(self.elts) if self.elts else "[]"
 
-    def test():
-        "Run Stack self-tests."
-        # Make these Stacks global so can be used after test() runs.
-        global s1, s2, s3, s4
-        s1 = Stack()
-        s2 = Stack(0, 1, 2, 3)
-        s3 = Stack("elt", [1, 2], 3)
-        s4 = Stack(0, 1, 2, 3)
+def test_stack():
+    "Run Stack self-tests."
 
-        assert [x for x in s4] == [3, 2, 1, 0]
+    # Make these Stacks global so can be used after test() runs.
+    global s1, s2, s3, s4
+    s1 = Stack()
+    s2 = Stack(0, 1, 2, 3)
+    s3 = Stack("elt", [1, 2], 3)
+    s4 = Stack(0, 1, 2, 3)
 
-        assert not s1
-        assert s1.is_empty()
-        assert not s1.top()
-        assert s2
-        assert not s2.is_empty()
-        assert 2 in s2
-        assert 6 not in s2
-        assert len(s2) == 4
-        assert len(s3) == 3
-        assert not s1 == s2
-        assert s2 == s4
-        assert s1.count(3) == 0
-        assert s2.count(3) == 1
-        assert s3.count([1, 2]) == 1
+    assert [x for x in s4] == [3, 2, 1, 0]
 
-        assert not s1.top()
-        assert s2.top() == 3
-        assert s2.push(4) == Stack(0, 1, 2, 3, 4)
-        assert s2.items() == [0, 1, 2, 3, 4]
-        assert s2.list()  == [4, 3, 2, 1, 0]
-        assert s2.top() == 4
-        assert s2.pop() == 4
-        assert s2.top() == 3
-        assert s3.pop() == 3
-        assert s3.pop() == [1, 2]
-        assert s3.top() == "elt"
-        assert s3.pop() == "elt"
-        assert not s3
-        try: s1.pop()
-        except(IndexError): True
-        try: s3.pop()
-        except(IndexError): True
+    assert not s1
+    assert s1.is_empty()
+    assert not s1.top()
+    assert s2
+    assert not s2.is_empty()
+    assert 2 in s2
+    assert 6 not in s2
+    assert len(s2) == 4
+    assert len(s3) == 3
+    assert not s1 == s2
+    assert s2 == s4
+    assert s1.count(3) == 0
+    assert s2.count(3) == 1
+    assert s3.count([1, 2]) == 1
 
-        s2 = Stack(0, 1, 2, 3)
-        assert [x for x in s2] == [3, 2, 1, 0]
-        assert s2*0 == Stack()
-        assert s2*1 == s2
-        assert s2*2 == Stack(0, 1, 2, 3, 0, 1, 2, 3)
+    assert not s1.top()
+    assert s2.top() == 3
+    assert s2.push(4) == Stack(0, 1, 2, 3, 4)
+    assert s2.items() == [0, 1, 2, 3, 4]
+    assert s2.list()  == [4, 3, 2, 1, 0]
+    assert s2.top() == 4
+    assert s2.pop() == 4
+    assert s2.top() == 3
+    assert s3.pop() == 3
+    assert s3.pop() == [1, 2]
+    assert s3.top() == "elt"
+    assert s3.pop() == "elt"
+    assert not s3
+    try: s1.pop()
+    except(IndexError): True
+    try: s3.pop()
+    except(IndexError): True
 
-        s1 = Stack(0, 1)
-        s2 = Stack(2, 3)
-        s1 + s2
-        s1 == Stack(0, 1, 2, 3)
-        s2 == Stack(2, 3)
-        s1.extend(4, 5) == Stack(0, 1, 2, 3, 4, 5)
+    s2 = Stack(0, 1, 2, 3)
+    assert [x for x in s2] == [3, 2, 1, 0]
+    assert s2*0 == Stack()
+    assert s2*1 == s2
+    assert s2*2 == Stack(0, 1, 2, 3, 0, 1, 2, 3)
 
-        return True
+    s1 = Stack(0, 1)
+    s2 = Stack(2, 3)
+    s1 + s2
+    s1 == Stack(0, 1, 2, 3)
+    s2 == Stack(2, 3)
+    s1.extend(4, 5) == Stack(0, 1, 2, 3, 4, 5)
+
+    return True
 
 if __name__ == "__main__":
-    Stack.test()
+    # Try to display relevant current values upon any assertion failure.
+    import os, subprocess
+    try:
+        # Use command-line 'pytest' if available to display
+        # current values upon assertion failure.
+        subprocess.call(["pytest", "-q", __file__])
+    except:
+        try:
+            # See https://github.com/albertz/py_better_exchook
+            import sys, traceback, better_exchook
+            better_exchook.install()  # runs: sys.excepthook = better_exchook
+        except:
+            # Otherwise, use normal assertion output.
+            try:
+                test_stack()
+                sys.exit()
+            except:
+                traceback.print_exc(file=sys.stdout)
+                raise SystemExit
+        # better_exchook module installed, use its current assertion values output.
+        try:
+            test_stack()
+        except:
+            better_exchook.better_exchook(*sys.exc_info())
